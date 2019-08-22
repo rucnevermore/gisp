@@ -24,7 +24,7 @@ apply(plugin = "java")
 
 dependencies {
     implementation("it.geosolutions:geoserver-manager:1.7.0")
-//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -37,6 +37,8 @@ dependencies {
     implementation( "org.springframework.boot:spring-boot-devtools")
     implementation("org.postgresql:postgresql")
     implementation("com.squareup.okhttp3:okhttp:3.5.0")
+    implementation("org.xerial:sqlite-jdbc:3.7.2")
+//    implementation("org.hibernate:hibernate-core")
 }
 
 tasks.withType<KotlinCompile> {
