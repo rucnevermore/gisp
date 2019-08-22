@@ -10,7 +10,7 @@ import lombok.Data
 class DefaultResponse {
     var errstr = ""
 
-    var result: Serializable? = null
+    var result: Any? = null
 
     var status = 0
 

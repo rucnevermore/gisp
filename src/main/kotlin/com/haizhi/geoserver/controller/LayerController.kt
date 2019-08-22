@@ -34,7 +34,7 @@ class LayerController {
             response.result = layer
         } else {
             val layerList = layerRepository!!.findAll()
-            response.result = layerList as ArrayList<*>
+            response.result = layerList
         }
         return response
     }
@@ -72,7 +72,7 @@ class LayerController {
     fun listIcon(): DefaultResponse {
         val response = DefaultResponse()
         val iconList = iconRepository!!.findAll()
-        response.result = iconList as ArrayList<*>
+        response.result = iconList
         return response
     }
 }
