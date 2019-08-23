@@ -9,6 +9,8 @@ import com.haizhi.geoserver.constant.BodyTemplate.Companion.ZOOKEEPER
 import com.haizhi.geoserver.constant.HttpConstant.Companion.JSON_CONTENT_TYPE
 import com.haizhi.geoserver.constant.HttpConstant.Companion.XML_CONTENT_TYPE
 import com.haizhi.geoserver.service.GeometryService
+import com.haizhi.geoserver.utils.GeoUtils
+import com.haizhi.geoserver.utils.GeoUtils.Companion.jsonToWkt
 import it.geosolutions.geoserver.rest.GeoServerRESTPublisher
 import it.geosolutions.geoserver.rest.HTTPUtils
 import it.geosolutions.geoserver.rest.decoder.RESTDataStoreList
@@ -39,13 +41,12 @@ class GeometryServiceImpl : GeometryService {
     }
 
     override fun createWorkspace(workspace: String): Boolean {
+        if(geoserverClient.reader.existsWorkspace(workspace))
+            return false
         return geoserverClient.publisher.createWorkspace(workspace)
     }
 
     override fun createDatastore(workspace: String, storeName: String): Boolean {
-        if (workspace == null || storeName == null) {
-            throw IllegalArgumentException("Null argument")
-        }
         val requestUrl = StringBuilder(geoserverClient.gsUrl).append("/rest/workspaces/")
             .append(workspace).append("/").append(GeoServerRESTPublisher.StoreType.DATASTORES)
 
@@ -63,6 +64,7 @@ class GeometryServiceImpl : GeometryService {
         if (logger.isInfoEnabled)
             logger.info("Store successfully created: $storeName")
         return true
+        TODO("判断是否存在数据存储，并进行相应的返回")
     }
 
     /**
@@ -85,8 +87,8 @@ class GeometryServiceImpl : GeometryService {
      *
      */
     override fun getAttribute(workspace: String, storeName: String, featureType: String): List<String> {
-        var attrList = ArrayList<String>()
-        var requestUrl = StringBuilder(geoserverClient.gsUrl).append("/rest/workspaces/")
+        val attrList = ArrayList<String>()
+        val requestUrl = StringBuilder(geoserverClient.gsUrl).append("/rest/workspaces/")
             .append(workspace).append("/datastores/").append(storeName)
             .append("/featuretypes/").append(featureType).append(".xml")
         val response = HTTPUtils.get(requestUrl.toString(), "admin", "geoserver")
@@ -94,5 +96,25 @@ class GeometryServiceImpl : GeometryService {
             attrList.add(it.name)
         }
         return attrList
+    }
+
+    /**
+     * http://123.126.105.34:8082/geoserver/haizhi/ows?service=WFS&version=2.0.0
+     * &request=GetFeature&typeName=haizhi%3Agdelt-quickstart&outputFormat=application%2Fjson&count=2
+     */
+    override fun query(workspace: String, storeName: String, featureType: String, count: Int, predicate: String, geometry: String): String {
+        val requestUrl = StringBuilder(geoserverClient.gsUrl).append("/")
+            .append(workspace).append("/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=")
+            .append(workspace)
+            .append(":")
+            .append(featureType)
+            .append("&outputFormat=application%2Fjson")
+        if (predicate != "") {
+            if(geometry != "")
+                requestUrl.append("&cql_filter=$predicate(geom," + jsonToWkt("{\"geometry\":$geometry}") + ")")
+        }
+        if (count != -1)
+            requestUrl.append("&count=$count")
+        return HTTPUtils.get(requestUrl.toString().replace(" ", "%20"), "admin", "geoserver")
     }
 }

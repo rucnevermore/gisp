@@ -14,9 +14,12 @@ allprojects {
     java.sourceCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
+        maven(url = "http://download.osgeo.org/webdav/geotools/")
         maven(url = "http://maven.aliyun.com/nexus/content/groups/public/")
         maven(url = "http://uk.maven.org/maven2/")
         maven(url = "http://maven.geo-solutions.it/")
+        maven(url = "https://repo.boundlessgeo.com/main/")
+        maven(url = "http://maven.geomajas.org/")
     }
 }
 
@@ -31,6 +34,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.google.code.gson:gson:2.8.5")
+    implementation("org.geotools:gt-geojson:21.2")
+    implementation("org.geotools:gt-epsg-hsql:21.2")
     implementation("org.projectlombok:lombok:1.18.4")
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

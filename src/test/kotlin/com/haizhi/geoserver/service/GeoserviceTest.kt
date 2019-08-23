@@ -9,9 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import org.junit.runner.RunWith
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-
 
 /**
 @author: teddy liu
@@ -23,19 +22,35 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @AutoConfigureMockMvc
 class GeoserviceTest {
 
-    @Autowired
+//    @Autowired
     private val mockMvc: MockMvc? = null
 
-    @Test
+    @Autowired
+    lateinit var geometryService: GeometryService
+
     @Throws(Exception::class)
     fun testGetAttribute() {
-        this.mockMvc!!.perform(get("/gisdata/getAttributes")
-            .param("workspace","haizhi")
-            .param("storeName", "geomesa")
+        this.mockMvc!!.perform(
+            get("/gisdata/listAttributes")
             .param("featureType", "gdelt-quickstart"))
             .andExpect(status().`is`(200))
             .andDo(MockMvcResultHandlers.print()
             )
     }
 
+    @Throws(Exception::class)
+    fun testDataPreviewAPI() {
+        this.mockMvc!!.perform(
+            post("/gisdata/dataPreview")
+            .param("featureType", "gdelt-quickstart"))
+            .andExpect(status().`is`(200))
+            .andDo(MockMvcResultHandlers.print()
+            )
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testDataPreviewService(){
+        val result = geometryService.query("haizhi", "geomesa", "gdelt-quickstart", 10, "", "")
+    }
 }

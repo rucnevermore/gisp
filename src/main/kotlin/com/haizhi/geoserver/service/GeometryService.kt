@@ -1,7 +1,6 @@
 package com.haizhi.geoserver.service
 
 import it.geosolutions.geoserver.rest.decoder.RESTDataStoreList
-import org.apache.catalina.util.ParameterMap
 import org.springframework.stereotype.Service
 
 /**
@@ -21,4 +20,6 @@ interface GeometryService {
     fun getDatastore(workspace: String): RESTDataStoreList
 
     fun getAttribute(workspace: String, storeName: String, featureType: String): List<String>
+
+    fun query(workspace: String, storeName: String, featureType: String, count: Int, predicate: String, geometry: String): String
 }
