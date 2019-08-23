@@ -31,6 +31,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-devtools")
+    implementation("io.springfox:springfox-swagger2:2.8.0")
+    implementation("io.springfox:springfox-swagger-ui:2.8.0")
+    implementation("org.postgresql:postgresql")
+    implementation("com.squareup.okhttp3:okhttp:3.5.0")
+    implementation("org.xerial:sqlite-jdbc:3.7.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -40,10 +46,6 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.4")
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation( "org.springframework.boot:spring-boot-devtools")
-    implementation("org.postgresql:postgresql")
-    implementation("com.squareup.okhttp3:okhttp:3.5.0")
-    implementation("org.xerial:sqlite-jdbc:3.7.2")
 //    implementation("org.hibernate:hibernate-core")
 }
 

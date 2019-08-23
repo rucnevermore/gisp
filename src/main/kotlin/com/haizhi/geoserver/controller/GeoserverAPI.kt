@@ -4,11 +4,12 @@ import com.google.gson.GsonBuilder
 import com.haizhi.geoserver.entities.FeatureData
 import com.haizhi.geoserver.response.DefaultResponse
 import com.haizhi.geoserver.service.GeometryService
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
-import org.json.simple.JSONObject
 
 /**
 @author: teddy liu
@@ -17,10 +18,8 @@ import org.json.simple.JSONObject
 
 @RestController
 @RequestMapping("/gisdata")
-class GeoserverAPI : BaseApi {
-
-    override var status: Int =  0
-    override var message: String = ""
+@Api("Geoserver相关接口")
+class GeoserverAPI  {
 
     internal var logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -110,8 +109,9 @@ class GeoserverAPI : BaseApi {
     /**
      * 获取一个gis表的数据，workspace名默认为user_id，datastore名默认为gis_tab_id，featureType名默认为gis_tab_id
      */
+    @ApiOperation(value = "查询geomesa的数据")
     @PostMapping(value = ["/queryData"], produces = ["application/json;charset=UTF-8"] )
-    fun dataPreview(
+    fun queryData(
 //        @RequestParam(value = "gisTabID", defaultValue = "", required = true)featureType: String,
 //        @RequestParam(value = "count", defaultValue = "-1",  required = false)count: Int,
 //        @RequestParam(value = "predicate", defaultValue = "", required = false)predicate: String,
